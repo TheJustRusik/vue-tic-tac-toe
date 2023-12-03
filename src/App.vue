@@ -1,7 +1,7 @@
 <script setup>
 // import HelloWorld from './components/Component1.vue'
-// import Btn from './components/Button.vue'
-    import { ref, registerRuntimeCompiler } from 'vue';
+    import Btn from './components/Button.vue'
+    import { ref } from 'vue';
 
     let p1 = ref('x')
     let p2 = ref('o')
@@ -10,6 +10,7 @@
     let curr_que = p1
     let msg = ref("Battle!")
     let is_first_move = ref(true)
+    let is_game_end = ref(false)
 
     let errors = ref(["You are trying to make a move that already has a piece on it!",
                       ""])
@@ -47,7 +48,17 @@
         
     }
 
+    function restart(){
+        field.value = [[' ',' ',' '],
+                           [' ',' ',' '],
+                           [' ',' ',' ']]
+        is_game_end.value = false
+    }
+
     function click(x,y){
+        if (is_game_end.value){
+            return
+        }
         is_first_move.value = false
         if (field.value[x][y] != ' '){
             return
@@ -65,10 +76,9 @@
             }else{
                 msg.value = "Tie!"
             }
-            field.value = [[' ',' ',' '],
-                           [' ',' ',' '],
-                           [' ',' ',' ']]
+            
             curr_que = p2
+            is_game_end.value = true
             is_first_move.value = true
         }
         if (!is_first_move.value){
@@ -83,7 +93,7 @@
 <template>
     <div class="mx-4">
         <div class="flex justify-center">
-            <h1 class="bg-gradient-to-r from-sky-500 to-pink-500 text-transparent bg-clip-text font-extrabold text-4xl m-4">Tic Tac Toe</h1>
+            <h1 class="animate-bounce bg-gradient-to-r from-sky-500 to-pink-500 text-transparent bg-clip-text font-extrabold text-4xl m-4">Tic Tac Toe</h1>
         </div>
         <div class="grid lg:grid-cols-2">
             <div class="justify-self-center">
@@ -171,6 +181,9 @@
                     </div>
                     
                 </div>
+                
+                <Btn v-if="is_game_end" msg="Play again!" class="mt-4" @clicked="restart"/>
+                
             </div>
         </div>
     </div>
