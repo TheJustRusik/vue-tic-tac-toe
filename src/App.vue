@@ -5,7 +5,11 @@
 
     let p1 = ref('x')
     let p2 = ref('o')
+    let p1s = ref(0);
+    let p2s = ref(0);
     let curr_que = p1
+    let msg = ref("Battle!")
+    let is_first_move = ref(true)
 
     let errors = ref(["You are trying to make a move that already has a piece on it!",
                       ""])
@@ -31,20 +35,46 @@
         if (field[0][2] === field[1][1] && field[1][1] === field[2][0] && field[0][2] !== ' '){
             return field[0][2]
         }
-        return "null";
+        
+        for(let i = 0; i < 3;i++){
+            for(let j = 0; j < 3;j++){
+                if (field[i][j] === ' '){
+                    return "null";
+                }
+            }
+        }
+        return 'tie';
+        
     }
 
     function click(x,y){
+        is_first_move.value = false
         if (field.value[x][y] != ' '){
             return
         }
         field.value[x][y] = curr_que.value
         
-        if (checkWinner(field.value) !== 'null'){
-            
+        const winner = checkWinner(field.value)
+        if (winner !== 'null'){
+            if (winner === p1.value){
+                p1s.value++
+                msg.value = "Player 1 win!"
+            }else if(winner === p2.value){
+                p2s.value++
+                msg.value = "Player 2 win!"
+            }else{
+                msg.value = "Tie!"
+            }
+            field.value = [[' ',' ',' '],
+                           [' ',' ',' '],
+                           [' ',' ',' ']]
+            curr_que = p2
+            is_first_move.value = true
         }
-
-        curr_que = curr_que == p1 ? p2 : p1
+        if (!is_first_move.value){
+            msg.value = "Battle"
+        }
+        curr_que = (curr_que == p1) ? (p2) : (p1)
     }
 
 
@@ -56,17 +86,25 @@
             <h1 class="bg-gradient-to-r from-sky-500 to-pink-500 text-transparent bg-clip-text font-extrabold text-4xl m-4">Tic Tac Toe</h1>
         </div>
         <div class="grid lg:grid-cols-2">
-            <div class="">
+            <div class="justify-self-center">
                 <div class="flex">
                     <p class="text-sky-300 text-2xl font-extrabold">Player 1:</p>
-                    <input maxlength="1" v-model="p1" type="text" class="bg-transparent text-white text-2xl font-extrabold">
+                    <input maxlength="1" v-model="p1" type="text" class="w-10 border rounded-xl text-center bg-transparent text-white text-2xl font-extrabold">
                 </div>
                 <div class="flex">
                     <p class="text-pink-300 text-2xl font-extrabold">Player 2:</p>
-                    <input maxlength="1" v-model="p2" type="text" class="w-5 bg-transparent text-white text-2xl font-extrabold">
+                    <input maxlength="1" v-model="p2" type="text" class="w-10 border rounded-xl text-center bg-transparent text-white text-2xl font-extrabold">
                 </div>
+                <div>
+                    <p class="text-4xl font-extrabold text-white">Score:</p>
+                    <p class="text-4xl font-extrabold text-white"><span class="text-sky-300">{{ p1s }}</span>:<span class="text-pink-300">{{ p2s }}</span></p>
+                </div>
+                <!--Msg-->
+                <div class="text-4xl font-extrabold text-white">{{ msg }}</div>
+                <div v-if="is_first_move" class="text-xl font-extrabold text-white">Hint: click on the cell where you want to go</div>
+                <div class="text-xl font-extrabold text-white">Hint: you can change the pieces you will play for</div>
             </div>
-            <div>
+            <div class="justify-self-center">
                 <div class="flex justify-center mb-4">
                     <div>
                         <p v-if="curr_que == p1" class="text-white text-xl text-sky-300">It's the first player's turn ({{ p1 }})</p>
