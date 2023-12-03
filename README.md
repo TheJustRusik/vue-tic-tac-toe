@@ -1,4 +1,6 @@
-# inf231-final
+# Tic Tac Toe
+
+Another inf231 assignment
 
 This template should help get you started developing with Vue 3 in Vite.
 
