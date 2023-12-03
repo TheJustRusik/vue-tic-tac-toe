@@ -1,8 +1,8 @@
 <script setup>
-// import HelloWorld from './components/Component1.vue'
     import Btn from './components/Button.vue'
     import { ref } from 'vue';
 
+    let draws = ref(0)
     let p1 = ref('x')
     let p2 = ref('o')
     let p1s = ref(0);
@@ -75,6 +75,7 @@
                 msg.value = "Player 2 win!"
             }else{
                 msg.value = "Tie!"
+                draws.value++
             }
             
             curr_que = p2
@@ -108,6 +109,7 @@
                 <div>
                     <p class="text-4xl font-extrabold text-white">Score:</p>
                     <p class="text-4xl font-extrabold text-white"><span class="text-sky-300">{{ p1s }}</span>:<span class="text-pink-300">{{ p2s }}</span></p>
+                    <p v-if="draws > 0" class="text-2xl font-bold text-gray-500">Draws: {{ draws }}</p>
                 </div>
                 <!--Msg-->
                 <div class="text-4xl font-extrabold text-white">{{ msg }}</div>
