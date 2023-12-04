@@ -100,11 +100,13 @@
             <div class="justify-self-center">
                 <div class="flex">
                     <p class="text-sky-300 text-2xl font-extrabold">Player 1:</p>
-                    <input maxlength="1" v-model="p1" type="text" class="w-10 border rounded-xl text-center bg-transparent text-white text-2xl font-extrabold">
+                    <input v-if="is_first_move" maxlength="1" v-model="p1" type="text" class="w-10 border rounded-xl text-center bg-transparent text-white text-2xl font-extrabold">
+                    <p v-else class="w-10 border rounded-xl text-center bg-transparent text-white text-2xl font-extrabold">{{ p1 }}</p>
                 </div>
                 <div class="flex">
                     <p class="text-pink-300 text-2xl font-extrabold">Player 2:</p>
-                    <input maxlength="1" v-model="p2" type="text" class="w-10 border rounded-xl text-center bg-transparent text-white text-2xl font-extrabold">
+                    <input v-if="is_first_move" maxlength="1" v-model="p2" type="text" class="w-10 border rounded-xl text-center bg-transparent text-white text-2xl font-extrabold">
+                    <p v-else class="w-10 border rounded-xl text-center bg-transparent text-white text-2xl font-extrabold">{{ p2 }}</p>
                 </div>
                 <div>
                     <p class="text-4xl font-extrabold text-white">Score:</p>
@@ -114,7 +116,7 @@
                 <!--Msg-->
                 <div class="text-4xl font-extrabold text-white">{{ msg }}</div>
                 <div v-if="is_first_move" class="text-xl font-extrabold text-white">Hint: click on the cell where you want to go</div>
-                <div class="text-xl font-extrabold text-white">Hint: you can change the pieces you will play for</div>
+                <div v-if="is_first_move" class="text-xl font-extrabold text-white">Hint: you can change the pieces you will play for</div>
             </div>
             <div class="justify-self-center">
                 <div class="flex justify-center mb-4">
